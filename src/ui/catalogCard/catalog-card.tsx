@@ -17,7 +17,7 @@ const CatalogCard: FC<ICatalogCardProps> = ({
 
   return (
     <div
-      className={`w-full flex flex-col justify-between gap-[15px] relative border border-[#dedede] bg-white pt-[10px] px-[20px] pb-[65px] cursor-pointer lg:[&>.btn]:hover:opacity-100 ${className}`}
+      className={`w-full max-w-[270px] max-h-[380px] flex flex-col justify-between gap-[15px] relative border border-[#dedede] bg-white pt-[10px] px-[20px] pb-[65px] cursor-pointer lg:[&>.title]:hover:mt-[-1rem] lg:[&>.btn]:hover:opacity-100 ${className}`}
       {...props}
     >
       <img
