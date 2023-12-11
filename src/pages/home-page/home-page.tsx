@@ -7,21 +7,17 @@ import data from "../../../data.json";
 
 const HomePage: FC = () => {
   return (
-    <div>
+    <div className="container">
       <h2 className="heading-1 pl-[16px] mt-[60px] mb-[40px]">
         Каталог товаров
       </h2>
 
-      <div className="container flex">
-        <div className="flex flex-wrap justify-center gap-x-[30px] gap-y-[40px]">
-          {(data.products as ICard[]).map((item) => (
-            <CatalogCard
-              className="w-full sm:w-[70%] md:w-[47%] lg:w-[31%] xl:w-[23%]"
-              card={item}
-              key={item.id}
-            />
-          ))}
-        </div>
+      <div className="w-fit mx-auto grid justify-items-center grid-col-one lg:grid-cols-three xxl:grid-cols-four gap-x-[30px] gap-y-[40px]">
+        {/* <div className=""> */}
+        {(data.products as ICard[]).map((item) => (
+          <CatalogCard card={item} key={item.id} />
+        ))}
+        {/* </div> */}
       </div>
     </div>
   );

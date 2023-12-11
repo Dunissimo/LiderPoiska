@@ -6,7 +6,7 @@ interface IBasketProps {
 
 const Basket: FC<IBasketProps> = ({ productsCount }) => {
   return (
-    <div className="flex items-center gap-[10px] p-1 cursor-pointer transition-all hover:text-green  active:scale-[.95]">
+    <div className="flex items-center gap-x-[10px] cursor-pointer transition-all hover:text-green  active:scale-[.95]">
       <svg
         width="28"
         height="23"
@@ -26,7 +26,7 @@ const Basket: FC<IBasketProps> = ({ productsCount }) => {
       <span className="hidden sm:block">Корзина</span>
 
       {productsCount! > 0 ? (
-        <div className="bg-green rounded-full text-white w-[21px] h-[21px] text-center text-[12px] font-medium">
+        <div className=" bg-green rounded-full text-white w-[21px] h-[21px] text-center text-[12px] font-medium">
           {productsCount}
         </div>
       ) : null}

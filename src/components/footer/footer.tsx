@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Footer: FC = () => {
   return (
-    <footer className="flex flex-col lg:flex-row items-center justify-between mt-[60px] pt-[20px] pb-[21px] border-t border-t-[#a8afbb]">
+    <footer className="flex flex-col lg:flex-row items-center justify-between mt-[60px] xl:mt-[66px] xxl:mt-[60px] pt-[20px] pb-[21px] border-t border-t-[#a8afbb]">
       <p className="text-center lg:text-left text-[12px] tracking-[.13px]">
         Тестовое задание на должность младшего программиста «Лидера поиска»,
         ver. 3.0

@@ -13,9 +13,8 @@ body {
 @layer components {
   .container {
     min-width: 320px;
-    max-width: 1200px;
     margin: 0 auto;
-    @apply px-2 sm:px-8 xl:px-0 xl:pr-[5px] xl:pl-[22px];
+    @apply max-w-[930px] xxl:max-w-[1170px] px-[15px] sm:px-[35px] md:px-[30px] lg:px-0;
   }
 }
 
@@ -38,9 +37,10 @@ body {
   }
   .text {
     color: #000;
+    font-size: 16px;
     font-family: Montserrat;
     font-style: normal;
     font-weight: 500;
-    line-height: 130%; /* 20.8px */
+    line-height: 135%;
   }
 }

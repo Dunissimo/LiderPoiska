@@ -8,7 +8,7 @@
     },
     {
       "id": 2,
-      "title": "Триммер PHILIPS HC3521/15 серебристый/черный",
+      "title": "Триммер PHILIPS HC3521/15 <br> серебристый/черный",
       "price": "2290",
       "img": "trimmer.png"
     },
@@ -38,7 +38,7 @@
     },
     {
       "id": 7,
-      "title": "Планшет DIGMA Optima 7 Z800 Android 10.0 серебристый",
+      "title": "Планшет DIGMA Optima <br> 7 Z800 Android 10.0 серебристый",
       "price": "9490",
       "img": "phone.png"
     },
@@ -50,19 +50,19 @@
     },
     {
       "id": 9,
-      "title": "Экшн-камера DIGMA DiCam 310 4K, WiFi, черный",
+      "title": "Экшн-камера DIGMA DiCam 310 4K, WiFi, <br> черный",
       "price": "2290",
       "img": "gopro.png"
     },
     {
       "id": 10,
-      "title": "Умная колонка ЯНДЕКС c голосовым помощником Алисой, серебристый",
+      "title": "Умная колонка ЯНДЕКС <br> c голосовым помощником Алисой, серебристый",
       "price": "5670",
       "img": "alisa.png"
     },
     {
       "id": 11,
-      "title": "Квадрокоптер DJI Mini 2 MT2PD Fly More Combo с камерой, серый",
+      "title": "Квадрокоптер DJI Mini 2 MT2PD Fly More Combo <br> с камерой, серый",
       "price": "60 990",
       "img": "quadro.png"
     },
@@ -74,7 +74,7 @@
     },
     {
       "id": 13,
-      "title": "МФУ лазерный CANON i-Sensys MF445dw, A4, лазерный, черный",
+      "title": "МФУ лазерный CANON <br> i-Sensys MF445dw, A4, лазерный, черный",
       "price": "35 310",
       "img": "printer.png"
     },

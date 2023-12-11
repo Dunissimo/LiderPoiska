@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Header: FC = () => {
   return (
-    <div className="w-full flex items-center justify-between pt-[37px]">
+    <div className="w-full flex items-center justify-between mt-[37px]">
       <Link to="/">
         <img src={logo} alt="" />
       </Link>
