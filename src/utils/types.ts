@@ -8,7 +8,7 @@ export interface ICard {
   id: number;
   img: string;
   title: string;
-  price: number;
+  price: string;
 }
 
 export interface IBaseButtonProps
