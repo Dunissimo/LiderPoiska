@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+  font-family: "Montserrat", sans-serif;
+  line-height: 130%;
+}
+
+@layer components {
+  .container {
+    min-width: 320px;
+    max-width: 1200px;
+    margin: 0 auto;
+    @apply px-2 sm:px-8 xl:px-0;
+  }
+}
+
+@layer utilities {
+  .heading-1 {
+    color: #000;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%;
+  }
+  .heading-2 {
+    color: #000;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%;
+  }
+  .text {
+    color: #000;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 20.8px */
+  }
+}
