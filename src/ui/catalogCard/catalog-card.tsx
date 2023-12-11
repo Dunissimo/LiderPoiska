@@ -25,7 +25,9 @@ const CatalogCard: FC<ICatalogCardProps> = ({
         src={imgSource}
         alt=""
       />
-      <span className="title text text-center mt-[19px]">{title}</span>
+      <span className="title min-h-[63px] text text-center mt-[17px]">
+        {title}
+      </span>
       <span className="text-[18px] font-bold text-center">{price} ₽</span>
 
       <Button

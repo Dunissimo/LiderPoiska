@@ -8,7 +8,9 @@ import data from "../../../data.json";
 const HomePage: FC = () => {
   return (
     <div>
-      <h2 className="heading-1 mt-[60px] mb-[40px]">Каталог товаров</h2>
+      <h2 className="heading-1 pl-[16px] mt-[60px] mb-[40px]">
+        Каталог товаров
+      </h2>
 
       <div className="container flex">
         <div className="flex flex-wrap justify-center gap-x-[30px] gap-y-[40px]">

@@ -8,7 +8,7 @@ const Header: FC = () => {
   return (
     <div className="w-full flex items-center justify-between pt-[37px]">
       <Link to="/">
-        <img className="pb-1" src={logo} alt="" />
+        <img src={logo} alt="" />
       </Link>
 
       <Link to="basket">
