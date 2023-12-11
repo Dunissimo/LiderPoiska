@@ -9,24 +9,27 @@ const BasketCard: FC<IBasketCardProps> = ({ card, className, ...props }) => {
   const { img, title, price } = card;
 
   const imgSource = useUrl("products/" + img);
+  const text = title.split("<br>");
 
   return (
     <div
-      className={`w-full flex flex-col lg:flex-row gap-4 lg:gap-0 items-center justify-between pb-[38px] lg:pr-[30px] border-b border-b-[#a8afbb] ${className}`}
+      className={`w-full flex flex-col lg:flex-row gap-4 lg:gap-0 items-center justify-between py-[40px] lg:pr-[30px] border-b border-b-[#a8afbb] ${className}`}
       {...props}
     >
       <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-0">
-        <img className="max-w-[150px] lg:mr-[65px]" src={imgSource} alt="" />
-        <span className="w-[300px] text-center lg:text-left">{title}</span>
+        <img className="max-w-[150px] lg:mr-[57px]" src={imgSource} alt="" />
+        <span className="w-[260px] mt-[10px] text-center lg:text-left">
+          {text.map((item, idx) => (
+            <p key={idx}>{item}</p>
+          ))}
+        </span>
       </div>
 
-      <div className="flex flex-col-reverse lg:flex-row items-center gap-4 lg:gap-0">
-        <Counter />
+      <Counter />
 
-        <span className="lg:ml-[100px] text-[18px] font-bold">{price} ₽</span>
-      </div>
+      <span className="ml-[50px] text-[18px] font-bold">{price} ₽</span>
 
-      <button className="hidden lg:block h-[40px] px-[10px] hover:bg-blue hover:text-white">
+      <button className="hidden lg:block h-[40px] mr-[-18px] px-[10px] hover:bg-blue hover:text-white">
         &#x2715;
       </button>
 

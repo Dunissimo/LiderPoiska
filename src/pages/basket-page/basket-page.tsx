@@ -78,24 +78,30 @@ const BasketPage: FC = () => {
 
   return (
     <div>
-      <h2 className="heading-1 mt-[60px] mb-[40px]">Корзина</h2>
+      <h2 className="heading-1 pl-[16px] mt-[60px] mb-[5px]">Корзина</h2>
 
       <div className="container">
-        <div className="flex flex-wrap gap-[30px]">
-          {(data.products as ICard[]).map((item) => (
-            <BasketCard className="mb-[40px]" card={item} key={item.id} />
+        <div className="flex flex-wrap">
+          {(data.products as ICard[]).slice(0, 3).map((item) => (
+            <BasketCard card={item} key={item.id} />
           ))}
         </div>
+
+        <span className="block w-full mt-[31px] mb-[60px] pr-[39px] text-right text-[30px] font-bold">
+          Сумма 6330 ₽
+        </span>
       </div>
 
-      <div className="bg-[#f2f5f9] pt-[70px] pb-[76px]">
-        <h2 className="heading-1">Пожалуйста, представьтесь</h2>
+      <div className="bg-[#f2f5f9] pt-[85px] pb-[76px] pl-[12px]">
+        <h2 className="text-[26px] font-bold text-center">
+          Пожалуйста, представьтесь
+        </h2>
 
         <form
           ref={ref}
           action="checkout"
           method="post"
-          className="w-[35%] mx-auto flex flex-col gap-[30px] mt-[30px]"
+          className="max-w-[430px] mx-auto flex flex-col gap-[30px] mt-[40px]"
           onSubmit={submitHandler}
         >
           <div className="flex flex-col gap-2 [&>span]:text-red-500">
@@ -137,7 +143,7 @@ const BasketPage: FC = () => {
           />
 
           <Button
-            className="uppercase py-4 text-[14px]"
+            className="uppercase text-[14px] h-[60px]"
             disabled={
               !form["username"] ||
               !form["tel"] ||
