@@ -10,7 +10,7 @@ const Footer: FC = () => {
         Тестовое задание на должность младшего программиста «Лидера поиска»,
         ver. 3.0
       </p>
-      <p className="flex items-center">
+      <p className="flex items-center text-[12px]">
         Выполнил с <img className="px-1" src={love} alt="" />{" "}
         <Link
           className="underline hover:no-underline"

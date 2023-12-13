@@ -4,7 +4,6 @@ import emailjs from "@emailjs/browser";
 import BasketCard from "../../ui/basketCard/basket-card";
 import Button from "../../ui/button/button";
 import Input from "../../ui/form/input/input";
-import { ICard } from "../../utils/types";
 
 import data from "../../../data.json";
 
@@ -82,13 +81,17 @@ const BasketPage: FC = () => {
 
       <div className="container">
         <div className="flex flex-wrap">
-          {(data.products as ICard[]).slice(0, 3).map((item) => (
+          {data.products.slice(0, 3).map((item) => (
             <BasketCard card={item} key={item.id} />
           ))}
         </div>
 
         <span className="block w-full mt-[31px] mb-[60px] pr-[39px] text-right text-[30px] font-bold">
-          Сумма 6330 ₽
+          Сумма{" "}
+          {data.products.slice(0, 3).reduce((acc, item) => {
+            return (acc += parseInt(item.price));
+          }, 0)}{" "}
+          ₽
         </span>
       </div>
 

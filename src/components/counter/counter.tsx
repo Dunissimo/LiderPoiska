@@ -11,7 +11,11 @@ const Counter: FC = () => {
         className={
           btnClass + " w-[50%] text-[24px] hover:bg-blue hover:text-white"
         }
-        onClick={() => setCount((prev) => (prev -= 1))}
+        onClick={() =>
+          setCount((prev) => {
+            return prev - 1 < 1 ? prev : prev - 1;
+          })
+        }
       >
         &minus;
       </button>
@@ -22,7 +26,11 @@ const Counter: FC = () => {
         className={
           btnClass + " w-[50%] text-[24px] hover:bg-blue hover:text-white"
         }
-        onClick={() => setCount((prev) => (prev += 1))}
+        onClick={() =>
+          setCount((prev) => {
+            return prev + 1 > 10 ? prev : prev + 1;
+          })
+        }
       >
         &#43;
       </button>
