@@ -10,7 +10,7 @@ interface IInitialState {
 
 const initialState: IInitialState = {
   products: products,
-  productsInBasket: [],
+  productsInBasket: JSON.parse(localStorage.getItem("basket") || "") || [],
 };
 
 const productsSlice = createSlice({
@@ -22,12 +22,37 @@ const productsSlice = createSlice({
     // так что делать это не стал
 
     addProductToBasket: (state, action: PayloadAction<IProduct>) => {
-      state.productsInBasket = [action.payload, ...state.productsInBasket];
-    },
-    deleteProductFromBasket: ({ products }, action: PayloadAction<number>) => {
-      const index = products.findIndex((item) => item.id === action.payload);
+      const index = state.productsInBasket.findIndex(
+        (item) => item.id === action.payload.id
+      );
 
-      products = [...products.slice(0, index), ...products.slice(index)];
+      if (index > -1) {
+        state.productsInBasket[index].count! += 1;
+
+        return;
+      }
+
+      state.productsInBasket = [action.payload, ...state.productsInBasket];
+      localStorage.setItem("basket", JSON.stringify(state.productsInBasket));
+    },
+    deleteProductFromBasket: (
+      state,
+      action: PayloadAction<{ type: "all" | "one"; id: number }>
+    ) => {
+      const index = state.productsInBasket.findIndex(
+        (item) => item.id === action.payload.id
+      );
+
+      if (action.payload.type == "one" && index) {
+        state.productsInBasket[index].count =
+          state.productsInBasket[index].count! - 1;
+      }
+
+      state.productsInBasket = state.productsInBasket.filter(
+        (item) => item.id !== action.payload.id
+      );
+
+      localStorage.setItem("basket", JSON.stringify(state.productsInBasket));
     },
   },
 });

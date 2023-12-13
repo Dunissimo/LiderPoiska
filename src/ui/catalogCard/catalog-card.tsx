@@ -1,17 +1,29 @@
-import { FC } from "react";
-import { useUrl } from "../../utils/hooks";
+import { FC, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector, useUrl } from "../../utils/hooks";
 import Button from "../button/button";
 import { IBaseCardProps } from "../../utils/types";
+import {
+  addProductToBasket,
+  deleteProductFromBasket,
+  selectProductsInBasket,
+} from "../../store/slices/productsSlice";
 
 interface ICatalogCardProps extends IBaseCardProps {}
 
-const CatalogCard: FC<ICatalogCardProps> = ({
-  card,
-  className,
-  isInBusket = false,
-  ...props
-}) => {
-  const { img, title, price } = card;
+const CatalogCard: FC<ICatalogCardProps> = ({ card, className, ...props }) => {
+  const dispatch = useAppDispatch();
+  const basket = useAppSelector(selectProductsInBasket);
+  const { img, title, price, id } = card;
+  const [isInBasket, setIsInBasket] = useState(false);
+
+  useEffect(() => {
+    if (!basket.find((item) => item.id == id)) {
+      setIsInBasket(false);
+      return;
+    }
+
+    setIsInBasket(true);
+  }, [basket, id]);
 
   const imgSource = useUrl("products/" + img);
   const text = title.split("<br>");
@@ -36,11 +48,18 @@ const CatalogCard: FC<ICatalogCardProps> = ({
       </span>
 
       <Button
-        className={`btn absolute scale-90 bottom-[15px] left-[50%] translate-x-[-50%] text-[14px] lg:opacity-0 transition-all duration-300 uppercase tracking-[0.6px] ${
-          isInBusket ? "bg-green" : "bg-blue"
+        onClick={() => {
+          if (isInBasket) {
+            dispatch(deleteProductFromBasket({ type: "all", id }));
+          } else {
+            dispatch(addProductToBasket(card));
+          }
+        }}
+        className={`btn absolute scale-90 bottom-[15px] left-[50%] translate-x-[-50%] text-[14px] lg:opacity-0 transition-all duration-300 uppercase tracking-[0.6px] active:scale-[.85] ${
+          isInBasket ? "bg-green" : "bg-blue"
         }`}
       >
-        {isInBusket ? "В корзине" : "добавить в корзину"}
+        {isInBasket ? "В корзине" : "добавить в корзину"}
       </Button>
     </div>
   );

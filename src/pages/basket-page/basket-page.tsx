@@ -79,7 +79,8 @@ const BasketPage: FC = () => {
         <span className="block w-full mt-[31px] mb-[60px] pr-[39px] text-right text-[30px] font-bold">
           Сумма{" "}
           {data.reduce((acc, item) => {
-            return (acc += parseInt(item.price));
+            acc += parseInt(item.price) * item.count;
+            return acc;
           }, 0)}{" "}
           ₽
         </span>

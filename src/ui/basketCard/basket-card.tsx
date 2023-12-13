@@ -1,15 +1,21 @@
 import { FC } from "react";
 import { IBaseCardProps } from "../../utils/types";
-import { useUrl } from "../../utils/hooks";
+import { useAppDispatch, useUrl } from "../../utils/hooks";
 import Counter from "../../components/counter/counter";
+import { deleteProductFromBasket } from "../../store/slices/productsSlice";
 
 interface IBasketCardProps extends IBaseCardProps {}
 
 const BasketCard: FC<IBasketCardProps> = ({ card, className, ...props }) => {
-  const { img, title, price } = card;
+  const dispatch = useAppDispatch();
+
+  const { img, title, price, id } = card;
 
   const imgSource = useUrl("products/" + img);
   const text = title.split("<br>");
+
+  const handleDeleteBtn = () =>
+    dispatch(deleteProductFromBasket({ type: "one", id }));
 
   return (
     <div
@@ -25,15 +31,21 @@ const BasketCard: FC<IBasketCardProps> = ({ card, className, ...props }) => {
         </span>
       </div>
 
-      <Counter />
+      <Counter product={card} />
 
       <span className="ml-[50px] text-[18px] font-bold">{price} ₽</span>
 
-      <button className="hidden lg:block h-[40px] mr-[-18px] px-[10px] hover:bg-blue hover:text-white">
+      <button
+        onClick={handleDeleteBtn}
+        className="hidden lg:block h-[40px] mr-[-18px] px-[10px] hover:bg-blue hover:text-white"
+      >
         &#x2715;
       </button>
 
-      <button className="lg:hidden h-[40px] px-[10px] bg-blue text-white hover:bg-green">
+      <button
+        onClick={handleDeleteBtn}
+        className="lg:hidden h-[40px] px-[10px] bg-blue text-white hover:bg-green"
+      >
         &#x2715; Удалить
       </button>
     </div>

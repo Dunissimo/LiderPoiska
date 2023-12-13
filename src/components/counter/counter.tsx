@@ -1,7 +1,17 @@
-import { FC, useState } from "react";
+import { FC } from "react";
+import { useAppDispatch } from "../../utils/hooks";
+import {
+  addProductToBasket,
+  deleteProductFromBasket,
+} from "../../store/slices/productsSlice";
+import { IProduct } from "../../utils/types";
 
-const Counter: FC = () => {
-  const [count, setCount] = useState(1);
+interface ICounterProps {
+  product: IProduct;
+}
+
+const Counter: FC<ICounterProps> = ({ product }) => {
+  const dispatch = useAppDispatch();
 
   const btnClass = "h-full text-center border text-[16px] font-medium";
 
@@ -11,26 +21,26 @@ const Counter: FC = () => {
         className={
           btnClass + " w-[50%] text-[24px] hover:bg-blue hover:text-white"
         }
-        onClick={() =>
-          setCount((prev) => {
-            return prev - 1 < 1 ? prev : prev - 1;
-          })
-        }
+        onClick={() => {
+          if (product.count - 1 > 1) {
+            dispatch(deleteProductFromBasket({ type: "one", id: product.id }));
+          }
+        }}
       >
         &minus;
       </button>
       <button disabled className={btnClass + " w-[100%]"}>
-        {count}
+        {product.count}
       </button>
       <button
         className={
           btnClass + " w-[50%] text-[24px] hover:bg-blue hover:text-white"
         }
-        onClick={() =>
-          setCount((prev) => {
-            return prev + 1 > 10 ? prev : prev + 1;
-          })
-        }
+        onClick={() => {
+          if (product.count + 1 <= 10) {
+            dispatch(addProductToBasket(product));
+          }
+        }}
       >
         &#43;
       </button>

@@ -15,9 +15,16 @@ const Header: FC = () => {
         <img src={logo} alt="" />
       </Link>
 
-      <Link to="basket">
-        <Basket productsCount={length} />
-      </Link>
+      {length > 0 ? (
+        <Link
+          to="basket"
+          className="transition-all hover:text-green  active:scale-[.95]"
+        >
+          <Basket productsCount={length} />
+        </Link>
+      ) : (
+        <Basket />
+      )}
     </div>
   );
 };
