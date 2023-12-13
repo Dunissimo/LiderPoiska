@@ -4,20 +4,9 @@ import emailjs from "@emailjs/browser";
 import BasketCard from "../../ui/basketCard/basket-card";
 import Button from "../../ui/button/button";
 import Input from "../../ui/form/input/input";
-
-import data from "../../../data.json";
-
-interface IForm {
-  username: string;
-  tel: string;
-  user_email: string;
-  status: "loading" | "error" | "sended" | "idle";
-}
-
-type Action = {
-  type: "all" | "name" | "email" | "tel" | "status";
-  payload?: any;
-};
+import { Action, IForm } from "../../utils/types";
+import { useAppSelector } from "../../utils/hooks";
+import { selectProductsInBasket } from "../../store/slices/productsSlice";
 
 const initialState: IForm = {
   username: "",
@@ -51,6 +40,7 @@ const buttonText = {
 };
 
 const BasketPage: FC = () => {
+  const data = useAppSelector(selectProductsInBasket);
   const [form, dispatch] = useReducer(reducer, initialState);
   const ref = useRef<HTMLFormElement>(null);
 
@@ -81,14 +71,14 @@ const BasketPage: FC = () => {
 
       <div className="container">
         <div className="flex flex-wrap">
-          {data.products.slice(0, 3).map((item) => (
+          {data.map((item) => (
             <BasketCard card={item} key={item.id} />
           ))}
         </div>
 
         <span className="block w-full mt-[31px] mb-[60px] pr-[39px] text-right text-[30px] font-bold">
           Сумма{" "}
-          {data.products.slice(0, 3).reduce((acc, item) => {
+          {data.reduce((acc, item) => {
             return (acc += parseInt(item.price));
           }, 0)}{" "}
           ₽

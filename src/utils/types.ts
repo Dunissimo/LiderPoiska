@@ -4,7 +4,7 @@ import {
   InputHTMLAttributes,
 } from "react";
 
-export interface ICard {
+export interface IProduct {
   id: number;
   img: string;
   title: string;
@@ -17,6 +17,18 @@ export interface IBaseInputProps extends InputHTMLAttributes<HTMLInputElement> {
   variant?: "default";
 }
 export interface IBaseCardProps extends HTMLAttributes<HTMLDivElement> {
-  card: ICard;
+  card: IProduct;
   isInBusket?: boolean;
 }
+
+export interface IForm {
+  username: string;
+  tel: string;
+  user_email: string;
+  status: "loading" | "error" | "sended" | "idle";
+}
+
+export type Action = {
+  type: "all" | "name" | "email" | "tel" | "status";
+  payload?: any;
+};

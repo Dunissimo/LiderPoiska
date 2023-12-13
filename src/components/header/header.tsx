@@ -3,8 +3,12 @@ import { FC } from "react";
 import logo from "../../assets/lp_logo 1.svg";
 import Basket from "../../ui/basket/basket";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../utils/hooks";
+import { selectProductsInBasket } from "../../store/slices/productsSlice";
 
 const Header: FC = () => {
+  const length = useAppSelector(selectProductsInBasket).length;
+
   return (
     <div className="w-full flex items-center justify-between mt-[37px]">
       <Link to="/">
@@ -12,7 +16,7 @@ const Header: FC = () => {
       </Link>
 
       <Link to="basket">
-        <Basket productsCount={5} />
+        <Basket productsCount={length} />
       </Link>
     </div>
   );
