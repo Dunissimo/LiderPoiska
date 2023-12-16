@@ -18,12 +18,14 @@ const Header: FC = () => {
       {length > 0 ? (
         <Link
           to="basket"
-          className="transition-all hover:text-green  active:scale-[.95]"
+          className="transition-all hover:text-green active:scale-[.95]"
         >
           <Basket productsCount={length} />
         </Link>
       ) : (
-        <Basket />
+        <Link to="/" title="Сначала добавьте товары">
+          <Basket />
+        </Link>
       )}
     </div>
   );

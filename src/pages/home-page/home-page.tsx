@@ -14,11 +14,9 @@ const HomePage: FC = () => {
       </h2>
 
       <div className="w-fit mx-auto grid justify-items-center grid-col-one lg:grid-cols-three xxl:grid-cols-four gap-x-[30px] gap-y-[40px]">
-        {/* <div className=""> */}
         {data.map((item) => (
           <CatalogCard card={item} key={item.id} />
         ))}
-        {/* </div> */}
       </div>
     </div>
   );
