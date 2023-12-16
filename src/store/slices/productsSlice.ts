@@ -29,6 +29,7 @@ const productsSlice = createSlice({
       if (index > -1) {
         state.productsInBasket[index].count! += 1;
 
+        localStorage.setItem("basket", JSON.stringify(state.productsInBasket));
         return;
       }
 
@@ -37,20 +38,29 @@ const productsSlice = createSlice({
     },
     deleteProductFromBasket: (
       state,
-      action: PayloadAction<{ type: "all" | "one"; id: number }>
+      action: PayloadAction<{ type: "all" | "one" | "dec"; id?: number }>
     ) => {
-      const index = state.productsInBasket.findIndex(
-        (item) => item.id === action.payload.id
-      );
+      if (action.payload.type == "all") {
+        state.productsInBasket = [];
+        localStorage.setItem("basket", "");
+      }
 
-      if (action.payload.type == "one" && index) {
+      if (action.payload.type == "one") {
+        state.productsInBasket = state.productsInBasket.filter(
+          (item) => item.id !== action.payload.id
+        );
+      }
+
+      if (action.payload.type == "dec") {
+        const index = state.productsInBasket.findIndex(
+          (item) => item.id === action.payload.id
+        );
+
+        // if (!index) return;
+
         state.productsInBasket[index].count =
           state.productsInBasket[index].count! - 1;
       }
-
-      state.productsInBasket = state.productsInBasket.filter(
-        (item) => item.id !== action.payload.id
-      );
 
       localStorage.setItem("basket", JSON.stringify(state.productsInBasket));
     },

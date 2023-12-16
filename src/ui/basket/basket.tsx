@@ -1,17 +1,10 @@
-import { FC, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC } from "react";
 
 interface IBasketProps {
   productsCount?: number;
 }
 
 const Basket: FC<IBasketProps> = ({ productsCount = 0 }) => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!productsCount) navigate("/");
-  }, [productsCount]);
-
   return (
     <div
       className={`flex items-center gap-x-[10px] ${

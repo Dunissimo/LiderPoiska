@@ -22,8 +22,8 @@ const Counter: FC<ICounterProps> = ({ product }) => {
           btnClass + " w-[50%] text-[24px] hover:bg-blue hover:text-white"
         }
         onClick={() => {
-          if (product.count - 1 > 1) {
-            dispatch(deleteProductFromBasket({ type: "one", id: product.id }));
+          if (product.count - 1 > 0) {
+            dispatch(deleteProductFromBasket({ type: "dec", id: product.id }));
           }
         }}
       >

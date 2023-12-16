@@ -5,10 +5,15 @@ import BasketCard from "../../ui/basketCard/basket-card";
 import Button from "../../ui/button/button";
 import Input from "../../ui/form/input/input";
 import { IForm } from "../../utils/types";
-import { useAppSelector } from "../../utils/hooks";
-import { selectProductsInBasket } from "../../store/slices/productsSlice";
+import { useAppDispatch, useAppSelector } from "../../utils/hooks";
+import {
+  deleteProductFromBasket,
+  selectProductsInBasket,
+} from "../../store/slices/productsSlice";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Popup from "../../ui/popup/popup";
+import { useNavigate } from "react-router-dom";
+import { handleLinkClick } from "../../utils/helpers";
 
 const buttonText = {
   pending: "Заказ формируется",
@@ -20,17 +25,20 @@ const buttonText = {
 type EmailSendStatus = "idle" | "pending" | "sended" | "error";
 
 const BasketPage: FC = () => {
+  const dispatch = useAppDispatch();
   const data = useAppSelector(selectProductsInBasket);
   const ref = useRef<HTMLFormElement>(null);
 
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isDirty },
   } = useForm<IForm>();
   const [disabled, setDisabled] = useState(true);
   const [status, setStatus] = useState<EmailSendStatus>("idle");
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setDisabled(isDirty ? status !== "idle" : true);
@@ -91,6 +99,15 @@ const BasketPage: FC = () => {
     } else {
       setDisabled(true);
     }
+  };
+
+  const handleClose = () => {
+    setShow(false);
+    navigate("/");
+    reset();
+    dispatch(deleteProductFromBasket({ type: "all" }));
+    document.body.style.overflow = "auto";
+    handleLinkClick();
   };
 
   return (
@@ -200,7 +217,7 @@ const BasketPage: FC = () => {
 
           <Popup
             show={show}
-            onClose={() => setShow(false)}
+            onClose={handleClose}
             title={
               <h2 className="text-[24px] font-medium text-center leading-[130%] mb-[20px]">
                 Спасибо,{" "}
