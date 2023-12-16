@@ -25,13 +25,13 @@ const BasketPage: FC = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<IForm>();
   const [disabled, setDisabled] = useState(true);
   const [status, setStatus] = useState<EmailSendStatus>("idle");
 
   useEffect(() => {
-    setDisabled(status !== "idle");
+    setDisabled(isDirty ? status !== "idle" : true);
   }, [status]);
 
   const submitHandler: SubmitHandler<IForm> = () => {
@@ -63,17 +63,11 @@ const BasketPage: FC = () => {
     },
     tel: {
       required: "Это обязательное поле",
-      minLength: {
-        message: "Телефон должен содержать 11 цифр",
-        value: 11,
-      },
-      maxLength: {
-        message: "Телефон должен содержать 11 цифр",
-        value: 11,
-      },
+
       pattern: {
-        message: "Буквы недопустимы",
-        value: /^[0-9]*$/g,
+        message: "Невалидный телефон",
+        value:
+          /^(\+7|7|8)?[\s-]?\(?[489][0-9]{2}\)?[\s-]?[0-9]{3}[\s-]?[0-9]{2}[\s-]?[0-9]{2}$/g,
       },
     },
     user_email: {
@@ -136,7 +130,11 @@ const BasketPage: FC = () => {
               control={control}
               rules={registerOptions.username}
               render={({ field }) => (
-                <Input placeholder="Ваше имя" {...field} />
+                <Input
+                  className={`${errors.username && "border border-red-500"}`}
+                  placeholder="Ваше имя"
+                  {...field}
+                />
               )}
             />
             {errors.username && (
@@ -150,7 +148,13 @@ const BasketPage: FC = () => {
               control={control}
               rules={registerOptions.tel}
               render={({ field }) => (
-                <Input placeholder="Телефон (вида 8-XXX-XX-XX)" {...field} />
+                <Input
+                  className={`${errors.tel && "border border-red-500"}`}
+                  type="tel"
+                  maskProps={{ mask: "+7 (999) 999-99-99", maskChar: "_" }}
+                  placeholder="Телефон"
+                  {...field}
+                />
               )}
             />
             {errors.tel && (
@@ -163,7 +167,14 @@ const BasketPage: FC = () => {
               name="user_email"
               control={control}
               rules={registerOptions.user_email}
-              render={({ field }) => <Input placeholder="Email" {...field} />}
+              render={({ field }) => (
+                <Input
+                  className={`${errors.user_email && "border border-red-500"}`}
+                  type="email"
+                  placeholder="Email"
+                  {...field}
+                />
+              )}
             />
             {errors.user_email && (
               <span className="text-red-500">{errors.user_email.message}</span>

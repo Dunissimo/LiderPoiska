@@ -3,7 +3,7 @@ import {
   HTMLAttributes,
   InputHTMLAttributes,
 } from "react";
-import { Control } from "react-hook-form";
+import { Props as MaskProps } from "react-input-mask";
 
 export interface IProduct {
   id: number;
@@ -17,7 +17,7 @@ export interface IBaseButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {}
 export interface IBaseInputProps extends InputHTMLAttributes<HTMLInputElement> {
   variant?: "default";
-  control?: Control<IForm>;
+  maskProps?: MaskProps;
 }
 export interface IBaseCardProps extends HTMLAttributes<HTMLDivElement> {
   card: IProduct;
