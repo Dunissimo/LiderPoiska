@@ -8,6 +8,7 @@ import { IForm } from "../../utils/types";
 import { useAppSelector } from "../../utils/hooks";
 import { selectProductsInBasket } from "../../store/slices/productsSlice";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import Popup from "../../ui/popup/popup";
 
 const buttonText = {
   pending: "Заказ формируется",
@@ -29,6 +30,7 @@ const BasketPage: FC = () => {
   } = useForm<IForm>();
   const [disabled, setDisabled] = useState(true);
   const [status, setStatus] = useState<EmailSendStatus>("idle");
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     setDisabled(isDirty ? status !== "idle" : true);
@@ -37,12 +39,11 @@ const BasketPage: FC = () => {
   const submitHandler: SubmitHandler<IForm> = () => {
     if (!ref.current || status !== "idle") return;
 
-    setStatus("pending");
-
     emailjs
       .sendForm("service_0wnxp58", "template_fu03m8p", ref.current)
       .then((result) => {
         if (result) {
+          setShow(true);
           setStatus("sended");
         }
       })
@@ -51,6 +52,8 @@ const BasketPage: FC = () => {
         throw new Error(error);
       })
       .finally(() => setStatus("idle"));
+
+    setShow(true);
   };
 
   const registerOptions = {
@@ -183,17 +186,43 @@ const BasketPage: FC = () => {
 
           <Input
             name="job_count"
-            value={Math.floor(Math.random() * 100)}
+            value={Math.floor(Math.random() * 10000)}
             className="hidden"
           />
 
           <Button
+            type="submit"
             className="uppercase text-[14px] h-[60px]"
             disabled={disabled}
           >
             {buttonText[status as keyof typeof buttonText]}
-            {/* Оформить заказ */}
           </Button>
+
+          <Popup
+            show={show}
+            onClose={() => setShow(false)}
+            title={
+              <h2 className="text-[24px] font-medium text-center leading-[130%] mb-[20px]">
+                Спасибо,{" "}
+                <span className="font-bold">
+                  {((ref.current || [])[0] as HTMLInputElement)?.value}
+                </span>
+                , Ваш заказ{" "}
+                <span className="font-bold">
+                  №{((ref.current || [])[3] as HTMLInputElement)?.value}
+                </span>{" "}
+                оформлен.
+              </h2>
+            }
+          >
+            <p className="leading-[130%] text-[16px]">
+              В ближайшее время мы свяжемся с вами по телефону{" "}
+              <span className="whitespace-nowrap font-bold">
+                +7 (800) 555 - 35 - 35
+              </span>{" "}
+              для его подтверждения.
+            </p>
+          </Popup>
         </form>
       </div>
     </div>
