@@ -9,7 +9,7 @@ const HomePage: FC = () => {
 
   return (
     <div className="container">
-      <h2 className="heading-1 pl-[16px] mt-[60px] mb-[40px]">
+      <h2 className="heading-1 lg:pl-[16px] mt-[60px] mb-[40px]">
         Каталог товаров
       </h2>
 

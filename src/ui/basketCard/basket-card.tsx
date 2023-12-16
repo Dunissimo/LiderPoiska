@@ -22,7 +22,7 @@ const BasketCard: FC<IBasketCardProps> = ({ card, className, ...props }) => {
       className={`w-full flex flex-col lg:flex-row gap-4 lg:gap-0 items-center justify-between py-[40px] lg:pr-[30px] border-b border-b-[#a8afbb] ${className}`}
       {...props}
     >
-      <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-0">
+      <div className="flex flex-col lg:flex-row justify-center items-center gap-4 lg:gap-0">
         <img className="max-w-[150px] lg:mr-[57px]" src={imgSource} alt="" />
         <span className="w-[260px] mt-[10px] text-center lg:text-left">
           {text.map((item, idx) => (
@@ -33,7 +33,7 @@ const BasketCard: FC<IBasketCardProps> = ({ card, className, ...props }) => {
 
       <Counter product={card} />
 
-      <span className="ml-[50px] text-[18px] font-bold">{price} ₽</span>
+      <span className="lg:ml-[50px] text-[18px] font-bold">{price} ₽</span>
 
       <button
         onClick={handleDeleteBtn}

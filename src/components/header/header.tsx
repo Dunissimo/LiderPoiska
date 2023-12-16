@@ -10,7 +10,7 @@ const Header: FC = () => {
   const length = useAppSelector(selectProductsInBasket).length;
 
   return (
-    <div className="w-full flex items-center justify-between mt-[37px]">
+    <div className="w-full flex items-center justify-between gap-[60px] sm:gap-0 mt-[37px]">
       <Link to="/">
         <img src={logo} alt="" />
       </Link>

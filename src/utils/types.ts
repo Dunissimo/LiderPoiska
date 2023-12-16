@@ -3,6 +3,7 @@ import {
   HTMLAttributes,
   InputHTMLAttributes,
 } from "react";
+import { Control } from "react-hook-form";
 
 export interface IProduct {
   id: number;
@@ -16,6 +17,7 @@ export interface IBaseButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {}
 export interface IBaseInputProps extends InputHTMLAttributes<HTMLInputElement> {
   variant?: "default";
+  control?: Control<IForm>;
 }
 export interface IBaseCardProps extends HTMLAttributes<HTMLDivElement> {
   card: IProduct;
@@ -29,7 +31,9 @@ export interface IForm {
   status: "loading" | "error" | "sended" | "idle";
 }
 
+export type ActionType = "username" | "user_email" | "tel" | "status";
+
 export type Action = {
-  type: "all" | "name" | "email" | "tel" | "status";
+  type: ActionType;
   payload?: any;
 };

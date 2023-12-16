@@ -10,7 +10,7 @@ interface IInitialState {
 
 const initialState: IInitialState = {
   products: products,
-  productsInBasket: JSON.parse(localStorage.getItem("basket") || "") || [],
+  productsInBasket: JSON.parse(localStorage.getItem("basket")!) || [],
 };
 
 const productsSlice = createSlice({

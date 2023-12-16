@@ -1,73 +1,104 @@
-import { FC, useReducer, useRef } from "react";
+import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 
 import BasketCard from "../../ui/basketCard/basket-card";
 import Button from "../../ui/button/button";
 import Input from "../../ui/form/input/input";
-import { Action, IForm } from "../../utils/types";
+import { IForm } from "../../utils/types";
 import { useAppSelector } from "../../utils/hooks";
 import { selectProductsInBasket } from "../../store/slices/productsSlice";
-
-const initialState: IForm = {
-  username: "",
-  tel: "",
-  user_email: "",
-  status: "idle",
-};
-
-const reducer = (state: IForm, action: Action) => {
-  switch (action.type) {
-    case "all":
-      return { ...action.payload };
-    case "name":
-      return { ...state, username: action.payload };
-    case "tel":
-      return { ...state, tel: action.payload };
-    case "email":
-      return { ...state, user_email: action.payload };
-    case "status":
-      return { ...state, status: action.payload };
-    default:
-      throw new Error(`Unknown action type: ${action.type}`);
-  }
-};
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 const buttonText = {
-  loading: "Заказ формируется",
+  pending: "Заказ формируется",
   error: "Что-то пошло не так",
   sended: "Заказ успешно оформлен",
   idle: "Оформить заказ",
 };
 
+type EmailSendStatus = "idle" | "pending" | "sended" | "error";
+
 const BasketPage: FC = () => {
   const data = useAppSelector(selectProductsInBasket);
-  const [form, dispatch] = useReducer(reducer, initialState);
   const ref = useRef<HTMLFormElement>(null);
 
-  const submitHandler = () => {
-    dispatch({ type: "status", payload: "loading" });
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<IForm>();
+  const [disabled, setDisabled] = useState(true);
+  const [status, setStatus] = useState<EmailSendStatus>("idle");
 
-    if (!ref.current) return;
+  useEffect(() => {
+    setDisabled(status !== "idle");
+  }, [status]);
+
+  const submitHandler: SubmitHandler<IForm> = () => {
+    if (!ref.current || status !== "idle") return;
+
+    setStatus("pending");
 
     emailjs
       .sendForm("service_0wnxp58", "template_fu03m8p", ref.current)
       .then((result) => {
         if (result) {
-          dispatch({ type: "status", payload: "sended" });
+          setStatus("sended");
         }
       })
       .catch((error) => {
-        dispatch({ type: "status", payload: "error" });
+        setStatus("error");
         throw new Error(error);
       })
-      .finally(() => {
-        dispatch({ type: "all", payload: {} });
-      });
+      .finally(() => setStatus("idle"));
+  };
+
+  const registerOptions = {
+    username: {
+      required: "Это обязательное поле",
+      minLength: {
+        message: "Слишком короткое имя",
+        value: 2,
+      },
+    },
+    tel: {
+      required: "Это обязательное поле",
+      minLength: {
+        message: "Телефон должен содержать 11 цифр",
+        value: 11,
+      },
+      maxLength: {
+        message: "Телефон должен содержать 11 цифр",
+        value: 11,
+      },
+      pattern: {
+        message: "Буквы недопустимы",
+        value: /^[0-9]*$/g,
+      },
+    },
+    user_email: {
+      required: "Это обязательное поле",
+      pattern: {
+        message: "Невалидный email",
+        value:
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      },
+    },
+  };
+
+  const handleChange = (e: FormEvent<HTMLFormElement>) => {
+    const target = e.target as HTMLFormElement;
+
+    if (target.form[0].value && target.form[1].value && target.form[2].value) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
   };
 
   return (
     <div>
-      <h2 className="heading-1 pl-[16px] mt-[60px] mb-[5px]">Корзина</h2>
+      <h2 className="heading-1 lg:pl-[16px] mt-[60px] mb-[5px]">Корзина</h2>
 
       <div className="container">
         <div className="flex flex-wrap">
@@ -76,7 +107,7 @@ const BasketPage: FC = () => {
           ))}
         </div>
 
-        <span className="block w-full mt-[31px] mb-[60px] pr-[39px] text-right text-[30px] font-bold">
+        <span className="block w-full mt-[31px] mb-[60px] text-center lg:text-right lg:pr-[39px] text-[30px] font-bold">
           Сумма{" "}
           {data.reduce((acc, item) => {
             acc += parseInt(item.price) * item.count;
@@ -86,7 +117,7 @@ const BasketPage: FC = () => {
         </span>
       </div>
 
-      <div className="bg-[#f2f5f9] pt-[85px] pb-[76px] pl-[12px]">
+      <div className="bg-[#f2f5f9] pt-[85px] pb-[76px] lg:pl-[12px]">
         <h2 className="text-[26px] font-bold text-center">
           Пожалуйста, представьтесь
         </h2>
@@ -95,39 +126,48 @@ const BasketPage: FC = () => {
           ref={ref}
           action="checkout"
           method="post"
-          className="max-w-[430px] mx-auto flex flex-col gap-[30px] mt-[40px]"
-          onSubmit={submitHandler}
+          className="max-w-[90%] usm:max-w-[430px] mx-auto flex flex-col gap-[30px] mt-[40px]"
+          onSubmit={handleSubmit(submitHandler)}
+          onChange={handleChange}
         >
-          <div className="flex flex-col gap-2 [&>span]:text-red-500">
-            <Input
-              value={form.username}
-              onChange={(e) => {
-                dispatch({ type: "name", payload: e.target.value });
-              }}
-              placeholder="Ваше имя"
+          <div className="flex flex-col gap-2">
+            <Controller
+              name="username"
+              control={control}
+              rules={registerOptions.username}
+              render={({ field }) => (
+                <Input placeholder="Ваше имя" {...field} />
+              )}
             />
+            {errors.username && (
+              <span className="text-red-500">{errors.username.message}</span>
+            )}
           </div>
 
-          <div className="flex flex-col gap-2 [&>span]:text-red-500">
-            <Input
-              value={form.tel}
-              onChange={(e) => {
-                dispatch({ type: "tel", payload: e.target.value });
-              }}
+          <div className="flex flex-col gap-2">
+            <Controller
               name="tel"
-              placeholder="Телефон"
+              control={control}
+              rules={registerOptions.tel}
+              render={({ field }) => (
+                <Input placeholder="Телефон (вида 8-XXX-XX-XX)" {...field} />
+              )}
             />
+            {errors.tel && (
+              <span className="text-red-500">{errors.tel.message}</span>
+            )}
           </div>
 
-          <div className="flex flex-col gap-2 [&>span]:text-red-500">
-            <Input
-              value={form.user_email}
-              onChange={(e) => {
-                dispatch({ type: "email", payload: e.target.value });
-              }}
+          <div className="flex flex-col gap-2">
+            <Controller
               name="user_email"
-              placeholder="Email"
+              control={control}
+              rules={registerOptions.user_email}
+              render={({ field }) => <Input placeholder="Email" {...field} />}
             />
+            {errors.user_email && (
+              <span className="text-red-500">{errors.user_email.message}</span>
+            )}
           </div>
 
           <Input
@@ -138,15 +178,10 @@ const BasketPage: FC = () => {
 
           <Button
             className="uppercase text-[14px] h-[60px]"
-            disabled={
-              !form["username"] ||
-              !form["tel"] ||
-              !form["user_email"] ||
-              form.status == "loading" ||
-              form.status == "error"
-            }
+            disabled={disabled}
           >
-            {buttonText[form.status as keyof typeof buttonText]}
+            {buttonText[status as keyof typeof buttonText]}
+            {/* Оформить заказ */}
           </Button>
         </form>
       </div>
