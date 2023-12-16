@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useRef, useState } from "react";
+import { FC, FormEvent, useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 
 import BasketCard from "../../ui/basketCard/basket-card";
@@ -15,15 +15,6 @@ import Popup from "../../ui/popup/popup";
 import { useNavigate } from "react-router-dom";
 import { handleLinkClick } from "../../utils/helpers";
 
-const buttonText = {
-  pending: "Заказ формируется",
-  error: "Что-то пошло не так",
-  sended: "Заказ успешно оформлен",
-  idle: "Оформить заказ",
-};
-
-type EmailSendStatus = "idle" | "pending" | "sended" | "error";
-
 const BasketPage: FC = () => {
   const dispatch = useAppDispatch();
   const data = useAppSelector(selectProductsInBasket);
@@ -33,33 +24,25 @@ const BasketPage: FC = () => {
     handleSubmit,
     control,
     reset,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm<IForm>();
   const [disabled, setDisabled] = useState(true);
-  const [status, setStatus] = useState<EmailSendStatus>("idle");
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setDisabled(isDirty ? status !== "idle" : true);
-  }, [status]);
-
   const submitHandler: SubmitHandler<IForm> = () => {
-    if (!ref.current || status !== "idle") return;
+    if (!ref.current) return;
 
     emailjs
       .sendForm("service_0wnxp58", "template_fu03m8p", ref.current)
       .then((result) => {
         if (result) {
           setShow(true);
-          setStatus("sended");
         }
       })
       .catch((error) => {
-        setStatus("error");
         throw new Error(error);
-      })
-      .finally(() => setStatus("idle"));
+      });
 
     setShow(true);
   };
@@ -212,7 +195,7 @@ const BasketPage: FC = () => {
             className="uppercase text-[14px] h-[60px]"
             disabled={disabled}
           >
-            {buttonText[status as keyof typeof buttonText]}
+            Оформить заказ
           </Button>
 
           <Popup
